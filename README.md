@@ -15,4 +15,24 @@ sOME INFORMATION, SUCH AS PROCESS OWNERSHIP, OTHER USERS' COMMAND HISTORIES, SCH
     linux-incidenet-response-collector/
     |-- main.sh
     |-- config/
-        |__ collector.conf
+    |   |__ collector.conf
+    |-- modules/
+    |  |-- processes.sh
+    |  |-- user.sh
+    |  |-- network_connections.sh
+    |  |-- listening_ports.sh
+    |  |-- command_history.sh
+    |  |-- system_info.sh
+    |  |-- scheduled_jobs.sh
+    |  |__  modifiied_files.sh
+    | 
+    |-- utils/
+    |   |__ helpers.sh
+    |
+    |-- reports/
+    |   |__ .gitkeep
+    |
+    |-- README.md
+    |-- LICENSE
+    |__ .gitignore
+
