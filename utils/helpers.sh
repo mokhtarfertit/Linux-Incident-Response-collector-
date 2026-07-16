@@ -39,3 +39,54 @@ write_reporte_header() {
 	printf '=%.0' {1..70} echo
 }
 
+# create ad directory and verifies that creation succeeded
+create_directory() {
+	local name_folder="$1"
+	local folder_path="$2"
+	
+	mkdir $name_folder
+	[[ -d "$folder_path"]]
+}
+#ckecks whether a file or directory can be read.
+is_readable() {
+	local path="$1"
+
+	[[ -r "$path" ]]
+}
+
+#checks whether a destination direcotyr can be written to
+is_writable() {
+	local path="$1"
+
+	[[ -w "$path" ]]
+}
+
+# runs a collection function and records whether is succeded or failed
+run_models() {
+	local module_name="$1"
+
+	log_message "INFO" "Running module: $module_name"
+
+	if "$module_name":then
+		log_indo "SUCCESS" "Module succeeded: $module_name"
+		return 0 
+	else
+		log_message "ERROR" "module failed: $module_name"
+		return 1
+	fi
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
