@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # displays normal progress messages
-log_indo() {
+log_message() {
 	local level="$1"
 	local message="$2"
 	local timestamp
@@ -21,30 +21,32 @@ command_exists() {
 
 #checks whether the script is running with root privileges
 is_root() {
-	[[ "$EUID -eq 0 "]]
+	[[ "$EUID" -eq 0 ]]
 }
 
 #adds a clear title , hostnem , date ,and collection time to report files.
 write_reporte_header() {
 	local title="$1"
-	local hostname="$2"
+	local system_hostname
 	local timestamp 
 	
+	system_hostname=$(hostname)
 	timestamp=$(date "+%Y-%m-%d %H:%M:%S")
 	
-	printf '=%.0' {1..70} echo
+	printf '=%.0' {1..70} 
+	echo
 	echo "$title"
-	echo "hostname is: $hostname"
-	echo "$timestamp"
-	printf '=%.0' {1..70} echo
+	echo "Hostname is: $system_hostname"
+	echo "Collection time : $timestamp"
+	printf '=%.0' {1..70} 
+	echo
 }
 
 # create ad directory and verifies that creation succeeded
 create_directory() {
-	local name_folder="$1"
-	local folder_path="$2"
+	local folder_path="$1"
 	
-	mkdir $name_folder
+	mkdir -p  "$folder_path" || return 1
 	[[ -d "$folder_path"]]
 }
 #ckecks whether a file or directory can be read.
@@ -62,12 +64,12 @@ is_writable() {
 }
 
 # runs a collection function and records whether is succeded or failed
-run_models() {
+run_module() {
 	local module_name="$1"
 
 	log_message "INFO" "Running module: $module_name"
 
-	if "$module_name":then
+	if "$module_name";then
 		log_indo "SUCCESS" "Module succeeded: $module_name"
 		return 0 
 	else
