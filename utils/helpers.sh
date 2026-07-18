@@ -14,7 +14,7 @@ log_message() {
 # check whether a linux command such as ss.... is installed or not 
 
 command_exists() {
-	loacl command_name="$1"
+	local command_name="$1"
 
 	command -v "$command_name" >/dev/null 2>&1
 }
@@ -33,12 +33,12 @@ write_report_header() {
 	system_hostname=$(hostname)
 	timestamp=$(date "+%Y-%m-%d %H:%M:%S")
 	
-	printf '=%.0' {1..70} 
+	printf '=%.0s' {1..70} 
 	echo
 	echo "$title"
 	echo "Hostname is: $system_hostname"
 	echo "Collection time : $timestamp"
-	printf '=%.0' {1..70} 
+	printf '=%.0s' {1..70} 
 	echo
 }
 
@@ -47,8 +47,9 @@ create_directory() {
 	local folder_path="$1"
 	
 	mkdir -p  "$folder_path" || return 1
-	[[ -d "$folder_path"]]
+	[[ -d "$folder_path" ]]
 }
+
 #ckecks whether a file or directory can be read.
 is_readable() {
 	local path="$1"
@@ -70,7 +71,7 @@ run_module() {
 	log_message "INFO" "Running module: $module_name"
 
 	if "$module_name";then
-		log_indo "SUCCESS" "Module succeeded: $module_name"
+		log_message "SUCCESS" "Module succeeded: $module_name"
 		return 0 
 	else
 		log_message "ERROR" "module failed: $module_name"
