@@ -25,7 +25,7 @@ is_root() {
 }
 
 #adds a clear title , hostnem , date ,and collection time to report files.
-write_reporte_header() {
+write_report_header() {
 	local title="$1"
 	local system_hostname
 	local timestamp 
