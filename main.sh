@@ -10,7 +10,18 @@ if [[ ! -f "$CONFIG_PATH" || ! -f "$HELPER_PATH" ]]; then
 	exit 1
 fi
 
-#Start the script 
+
+#Load the configuration file
+source "$CONFIG_PATH"
+#Load the helper functions 
 source "$HELPER_PATH"
+
+#Start the script 
 write_report_header "Linux Incident Response Collector"
 
+#check priviles run as a root
+if is_root ; then
+	echo "Ruunning with root privileges."
+else
+	echo "Warning: script is not runningg with sudo."
+fi
