@@ -39,20 +39,20 @@ elif ! (is_writable "$REPORT_DIR"); then
 elif ! (is_readable "$REPORT_DIR"); then
 	echo "the folder nit redadable"
 else
-	echo "valid...."
+	echo "configuraton valid...."
 fi
 
 ##### check modified days
-if [[ "$MODIFIED_DAYS" =~ ^[0-9]+$ ]]; then 
-	echo "valid...."
-elif [[ "$MODIFIED_DAYS" > 365 || "$MODIFIED_DAYS" < 0  ]]; then 
-	echo "invalide number should be less than 365 and big than 0"
-	echo "change in file of config"
-	exit 1
-else 
+if [[ ! "$MODIFIED_DAYS" =~ ^[0-9]+$ ]]; then 
 	echo "Invalid value: modified days must be a number"
 	echo "change in file of conig"
 	exit 1
+elif (( "$MODIFIED_DAYS" > 365 && "$MODIFIED_DAYS" < 0  )); then 
+	echo "invalide number should be less than 365 and big than 0 : $MODIFIED_DAYS"
+	echo "change in file of config"
+	exit 1
+else 
+	echo "modified days valid...."
 fi
 
 ##### check configured scan paths exist
@@ -66,6 +66,6 @@ elif ! is_readable "$SCAN_PATH"; then
 	echo " the folder not readabel "
 	exit 1
 else
-	echo "valid...."
+	echo "scan path valid...."
 fi
 
