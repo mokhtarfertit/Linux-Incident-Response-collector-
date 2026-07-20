@@ -78,7 +78,11 @@ run_module() {
 		return 1
 	fi
 }
-
+display_main_menu() {
+	echo "1. collect all evidence"
+	echo "2. Select specific evidence modules"
+	echo "3. Exist"
+}
 
 
 

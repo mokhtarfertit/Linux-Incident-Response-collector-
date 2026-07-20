@@ -69,3 +69,34 @@ else
 	echo "scan path valid...."
 fi
 
+
+# Display the main menu
+
+collect_all_evidence() {
+	echo "Collect all evidence: not implemented yet."
+}
+
+select_specific_modules() {
+	echo "Specific module selection: not implemented yet."
+}
+
+while true; do
+	display_main_menu
+	read -r choice
+
+	case "$choice" in
+		1)
+			collect_all_evidence
+			;;
+		2)
+			select_specific_modules
+			;;
+		3)
+			echo "Exiting.."
+			break
+			;;
+		*)
+			echo "invalid choice."
+			;;
+	esac
+done
