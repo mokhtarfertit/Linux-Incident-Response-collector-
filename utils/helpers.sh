@@ -83,6 +83,18 @@ display_main_menu() {
 	echo "2. Select specific evidence modules"
 	echo "3. Exist"
 }
+display_available_modules() {
+	AVAILABLE_MODULES=(
+		"PROCESSES"
+		"USERS"
+		"NETWORK"
+		"SCHEDULED_JOBS"
+		"LISTENING PORTS"
+		"COMMAND HISTORY"
+		"SYSTEM INFO"
+		"MODIFIED FILES"
+	)
+}
 
 
 
