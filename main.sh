@@ -82,7 +82,7 @@ select_specific_modules() {
 
 while true; do
 	display_main_menu
-	read -r choice
+	read -r -p "Enter number from Menu: " choice
 
 	case "$choice" in
 		1)
