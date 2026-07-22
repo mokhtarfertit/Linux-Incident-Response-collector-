@@ -96,10 +96,18 @@ AVAILABLE_MODULES=(
 	)
 display_available_modules() {
 	local index
-
+	printf '=%.0s' {1..70}
+	echo
+	echo "AVAILABLE MODULES"
+	printf '=%.0s' {1..70}
+	echo
+	
 	for index in "${!AVAILABLE_MODULES[@]}"; do
 		echo "$((index + 1)). ${AVAILABLE_MODULES[$index]}"
-	done 
+	done
+	printf '=%.0s' {1..70}
+	echo 
+
 }
 
 

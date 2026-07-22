@@ -87,11 +87,6 @@ select_specific_modules() {
 while true; do
 	display_main_menu
 	read -r -p "Enter number from Menu: " choice
-	printf '=%.0s' {1..70}
-	echo
-	echo "Module available"
-	printf '=%.0s' {1..70}
-	echo
 	case "$choice" in
 		1)
 			collect_all_evidence
