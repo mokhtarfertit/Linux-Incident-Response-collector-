@@ -92,7 +92,7 @@ select_specific_modules() {
 
 	module_count="${#AVAILABLE_MODULES[@]}"
 
-	for choice in "${#AVAILABLE_MODULES[@]}"; do
+	for choice in "${choices[@]}"; do
 		# validate that choice is a number
 		# convert user number to bash array index
 		# store the selcted module name
