@@ -77,13 +77,21 @@ collect_all_evidence() {
 }
 
 select_specific_modules() {
-	echo "Specific module selection: not implemented yet."
+	# display available modules
+	display_available_modules
+	# Read one or more choices
+	# validate each choice
+	# Add valid modules names to SELECTED_MODULES
 }
 
 while true; do
 	display_main_menu
 	read -r -p "Enter number from Menu: " choice
-
+	printf '=%.0s' {1..70}
+	echo
+	echo "Module available"
+	printf '=%.0s' {1..70}
+	echo
 	case "$choice" in
 		1)
 			collect_all_evidence

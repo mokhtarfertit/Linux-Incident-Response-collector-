@@ -83,8 +83,8 @@ display_main_menu() {
 	echo "2. Select specific evidence modules"
 	echo "3. Exist"
 }
-display_available_modules() {
-	AVAILABLE_MODULES=(
+
+AVAILABLE_MODULES=(
 		"PROCESSES"
 		"USERS"
 		"NETWORK"
@@ -94,6 +94,12 @@ display_available_modules() {
 		"SYSTEM INFO"
 		"MODIFIED FILES"
 	)
+display_available_modules() {
+	local index
+
+	for index in "${!AVAILABLE_MODULES[@]}"; do
+		echo "$((index + 1)). ${AVAILABLE_MODULES[$index]}"
+	done 
 }
 
 
