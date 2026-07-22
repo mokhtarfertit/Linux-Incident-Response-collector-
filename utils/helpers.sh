@@ -123,7 +123,15 @@ display_available_modules() {
 	echo 
 
 }
+display_selected_modules() {
+	local module
+	
+	echo "Selected modules:"
 
+	for module  in "${SELECTED_MODULES[@]}"; do
+		echo "- $module"
+	done
+}
 
 
 

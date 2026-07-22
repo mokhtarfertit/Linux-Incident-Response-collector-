@@ -78,8 +78,34 @@ collect_all_evidence() {
 }
 
 select_specific_modules() {
-	# display available modules
+	local choices
+	local choice
+	local index
+	local module_count
+
+	SELECTED_MODULES=()
+
 	display_available_modules
+
+	echo "Enter one or more modul numbers separated by spaces:"
+	read -r -a choices
+
+	module_count="${#AVAILABLE_MODULES[@]}"
+
+	for choice in "${#AVAILABLE_MODULES[@]}"; do
+		# validate that choice is a number
+		# convert user number to bash array index
+		# store the selcted module name
+		if [[ "$choice" =~ ^[0-9]+$ ]] &&	
+		(( choice >=1 && choice <=module_count )); then
+			index=$((choice - 1))
+			SELECTED_MODULES+=("${AVAILABLE_MODULES[$index]}")
+		else
+			echo "Invalid choice: $choice"
+		fi
+	done 
+
+	display_selected_modules
 	# Read one or more choices
 	# validate each choice
 	# Add valid modules names to SELECTED_MODULES
