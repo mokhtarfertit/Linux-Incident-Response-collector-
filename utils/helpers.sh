@@ -94,6 +94,20 @@ AVAILABLE_MODULES=(
 		"SYSTEM INFO"
 		"MODIFIED FILES"
 	)
+SELECTED_MODULES=()
+
+enable_all_modules() {
+	
+	printf '=%.0s' {1..70}
+	echo
+	echo "COLLECT ALL MODULES"
+	printf '=%.0s' {1..70}
+	echo
+	SELECTED_MODULES=("${AVAILABLE_MODULES[@]}")
+	printf '=%.0s' {1..70}
+	echo
+}
+
 display_available_modules() {
 	local index
 	printf '=%.0s' {1..70}

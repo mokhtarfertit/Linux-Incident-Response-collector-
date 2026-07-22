@@ -73,7 +73,8 @@ fi
 # Display the main menu
 
 collect_all_evidence() {
-	echo "Collect all evidence: not implemented yet."
+	#Collect all evidence: not implemented yet.
+	enable_all_modules
 }
 
 select_specific_modules() {
