@@ -92,6 +92,9 @@ select_specific_modules() {
 
 	module_count="${#AVAILABLE_MODULES[@]}"
 
+	# Read one or more choices
+	# validate each choice
+	# Add valid modules names to SELECTED_MODULES
 	for choice in "${choices[@]}"; do
 		# validate that choice is a number
 		# convert user number to bash array index
@@ -106,9 +109,6 @@ select_specific_modules() {
 	done 
 
 	display_selected_modules
-	# Read one or more choices
-	# validate each choice
-	# Add valid modules names to SELECTED_MODULES
 }
 
 while true; do
