@@ -109,6 +109,7 @@ enable_all_modules() {
 }
 
 display_available_modules() {
+	#this fontion for display all fontion with give it index
 	local index
 	printf '=%.0s' {1..70}
 	echo
@@ -124,6 +125,7 @@ display_available_modules() {
 
 }
 display_selected_modules() {
+	#display selected modules this fontion use with specific modole
 	local module
 	
 	echo "Selected modules:"
