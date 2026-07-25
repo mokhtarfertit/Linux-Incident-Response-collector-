@@ -134,6 +134,16 @@ display_selected_modules() {
 		echo "- $module"
 	done
 }
+Check_Number_Days() {
+
+	echo "enter nubmer of days:"
+	read -a days
+
+	if [[ "$days" >= 7 && "$days" < 0 ]]; then
+		echo "please enter nubmer between 1 and 7 days this is possible"
+		read  days
+	fi 
+}
 
 
 
