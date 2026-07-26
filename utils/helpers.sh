@@ -135,9 +135,9 @@ display_selected_modules() {
 	done
 }
 Check_Number_Days() {
-
+	local days
 	echo "enter nubmer of days:"
-	read -a days
+	read -r -p days
 
 	if [[ "$days" >= 7 && "$days" < 0 ]]; then
 		echo "please enter nubmer between 1 and 7 days this is possible"
