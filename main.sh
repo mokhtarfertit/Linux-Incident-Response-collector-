@@ -109,6 +109,16 @@ select_specific_modules() {
 	done 
 
 	display_selected_modules
+
+	# ask for the time range 
+	
+	if [[ ${#SELECTED_MODULES[@]} -gt 0 ]]; then
+		echo "The array is not empty"
+		Check_Number_Days 	
+	else
+		echo "the array is emty"
+		exit 1
+	fi
 }
 
 while true; do
