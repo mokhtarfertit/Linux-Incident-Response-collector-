@@ -143,9 +143,6 @@ select_specific_modules() {
 	else 
 		echo "Please enter yes or no."
 	fi
-	
-
-
 	printf '=%.0s' {1..70}
         echo
 }
