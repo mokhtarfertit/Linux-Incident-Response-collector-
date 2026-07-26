@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+UTILS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR="$(cd "$UTILS_DIR/.." && pwd)"
+CONFIG_PATH="$BASE_DIR/config/config.collector.conf"
+
+#Load the configuration file
+source "$CONFIG_PATH"
+
 # displays normal progress messages
 log_message() {
 	local level="$1"
@@ -136,8 +143,11 @@ display_selected_modules() {
 }
 Check_Number_Days() {
 	local days
-	echo "enter nubmer of days:" 
+	echo "enter nubmer of days [$MODIFIED_DAYS] :"  
 	read days
+
+	days="${days:-$MODIFIED_DAYS}"
+	echo "Selected value; $days"
 	if (( days > 7 || days < 1 )); then
 		echo "please enter nubmer between 1 and 7 days this is possible"
 		return 1

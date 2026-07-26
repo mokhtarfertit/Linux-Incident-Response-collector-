@@ -108,17 +108,46 @@ select_specific_modules() {
 		fi
 	done 
 
-	display_selected_modules
+
 
 	# ask for the time range 
-	
+	local days
 	if [[ ${#SELECTED_MODULES[@]} -gt 0 ]]; then
 		echo "The array is not empty"
-		Check_Number_Days 	
+		Check_Number_Days days	
 	else
 		echo "the array is emty"
 		exit 1
 	fi
+	# show collection summary 
+	printf '=%.0s' {1..70}
+        echo
+        echo "COLLECTION SUMMARY"
+        printf '=%.0s' {1..70}
+        echo
+	display_selected_modules
+	echo "the modified file time range is : $days"
+        ###########check priviles run as a root
+	if is_root ; then
+        	echo "Ruunning with root privileges."
+	else
+        	echo "Warning: script is not runningg with sudo."
+	fi
+	read -r -p  "the information like you want (yes/no):" answer
+	
+	if [[ "$answer" == "yes" ]]; then
+		echo "continuing.."
+	elif [[ "$answer" == "no" ]]; then
+		echo "Stopping.."
+		exit 1
+	else 
+		echo "Please enter yes or no."
+	fi
+	
+
+
+	printf '=%.0s' {1..70}
+        echo
 }
 
 while true; do
