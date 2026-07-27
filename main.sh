@@ -146,6 +146,19 @@ select_specific_modules() {
 	printf '=%.0s' {1..70}
         echo
 }
+#Create the report directory
+prepare_report_direcotory() {
+	local timestamp
+        local folder_name	
+	write_report_header " REPORT "
+
+	timestamp=$(date "+%Y-%m-%d_%H-%M-%S")
+
+	folder_name="incident_$timestamp"
+	create_directory $folder_name
+	incident_folder="$REPORT_DIR/$folder_name"
+
+}	
 
 while true; do
 	display_main_menu
