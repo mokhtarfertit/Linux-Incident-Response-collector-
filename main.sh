@@ -168,7 +168,9 @@ prepare_report_direcotory() {
 }	
 # load module file
 load_module_files() {
+	#checki if all modules exist 
 
+	#check the collected modules are exist 
 
 }
 while true; do
