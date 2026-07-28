@@ -166,7 +166,11 @@ prepare_report_direcotory() {
 
 
 }	
+# load module file
+load_module_files() {
 
+
+}
 while true; do
 	display_main_menu
 	read -r -p "Enter number from Menu: " choice
