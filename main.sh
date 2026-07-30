@@ -3,7 +3,9 @@
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_PATH="$BASE_DIR/config/config.collector.conf"
 HELPER_PATH="$BASE_DIR/utils/helpers.sh"
+MODULE_PATH="$BASE_DIR/modules"
 REPORT_DIR="$BASE_DIR/reports"
+
 
 #check requret of project
 if [[ ! -f "$CONFIG_PATH" || ! -f "$HELPER_PATH" ]]; then
@@ -16,6 +18,10 @@ fi
 source "$CONFIG_PATH"
 #Load the helper functions 
 source "$HELPER_PATH"
+#Load the modules
+source "$MODULE_PATH"
+
+collect_system_info
 
 #Start the script 
 write_report_header "Linux Incident Response Collector"
@@ -157,7 +163,7 @@ prepare_report_direcotory() {
 	create_directory $folder_name
 	incident_folder="$REPORT_DIR/$folder_name"
 	#verfiy that the directory exists and is writable 
-	if [[ -d "$incident_folder" && is_writable "$incident_folder" ]]; then
+	if [[ -d "$incident_folder" && -w "$incident_folder" ]]; then
 		echo "Folder exists and is writable "
 	else
 		echo "folder is missing or not writable"
@@ -169,7 +175,7 @@ prepare_report_direcotory() {
 # load module file
 load_module_files() {
 	#checki if all modules exist 
-
+	echo "test1"
 	#check the collected modules are exist 
 
 }
