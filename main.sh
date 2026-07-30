@@ -21,7 +21,23 @@ source "$HELPER_PATH"
 #Load the modules
 source "$MODULE_PATH"
 
-collect_system_info
+#load all modules for can use it
+for module_file in "$MODULE_PATH"/*.sh; do
+	source "$module_file"
+done
+
+#run all mdoules
+run_all_modules() {
+	collect_current_logged
+	collect_running_processes
+	collect_scheduled_jobs
+	collect_system_info
+	collect_network_connection
+	collect_command_history
+	collect_listening_ports
+	collect_modified_files
+}	
+
 
 #Start the script 
 write_report_header "Linux Incident Response Collector"
