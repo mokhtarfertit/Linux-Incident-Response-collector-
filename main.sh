@@ -18,8 +18,6 @@ fi
 source "$CONFIG_PATH"
 #Load the helper functions 
 source "$HELPER_PATH"
-#Load the modules
-source "$MODULE_PATH"
 
 #load all modules for can use it
 for module_file in "$MODULE_PATH"/*.sh; do
@@ -53,7 +51,7 @@ fi
 
 if [[ ! -d "$REPORT_DIR" ]]; then
 	echo "the folder report not exit "
-	create_directory "$REPROT_DIR"
+	create_directory "$REPORT_DIR"
 elif [[ ! -n "$REPORT_DIR" ]]; then 
 	echo "folder reports is empty"
 elif ! (is_writable "$REPORT_DIR"); then 
