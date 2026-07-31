@@ -67,7 +67,7 @@ if [[ ! "$MODIFIED_DAYS" =~ ^[0-9]+$ ]]; then
 	echo "Invalid value: modified days must be a number"
 	echo "change in file of conig"
 	exit 1
-elif (( "$MODIFIED_DAYS" > 365 && "$MODIFIED_DAYS" < 0  )); then 
+elif (( "$MODIFIED_DAYS" > 365 || "$MODIFIED_DAYS" < 1  )); then 
 	echo "invalide number should be less than 365 and big than 0 : $MODIFIED_DAYS"
 	echo "change in file of config"
 	exit 1
@@ -174,8 +174,10 @@ prepare_report_direcotory() {
 	timestamp=$(date "+%Y-%m-%d_%H-%M-%S")
 
 	folder_name="incident_$timestamp"
-	create_directory $folder_name
+	
 	incident_folder="$REPORT_DIR/$folder_name"
+	create_directory "$incident_folder"
+	
 	#verfiy that the directory exists and is writable 
 	if [[ -d "$incident_folder" && -w "$incident_folder" ]]; then
 		echo "Folder exists and is writable "
