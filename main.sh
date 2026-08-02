@@ -52,14 +52,39 @@ fi
 
 #run all mdoules
 run_all_modules() {
-	collect_current_logged
-	collect_running_processes
-	collect_scheduled_jobs
-	collect_system_info
-	collect_network_connection
-	collect_command_history
-	collect_listening_ports
-	collect_modified_files
+	local failed_modules=0
+	
+	run_module collect_current_logged ||
+		failed_modules=$((failed_modules + 1))
+	
+	run_module collect_running_processes ||
+		failed_modules=$((failed_modules + 1))
+
+	run_module collect_scheduled_jobs ||
+		failed_modules=$((failed_modules + 1))
+
+	run_module collect_system_info ||
+		failed_modules=$((failed_modules + 1))
+
+	run_module collect_network_connection ||
+		failed_modules=$((failed_modules + 1))
+
+	run_module collect_command_history ||
+		failed_modules=$((failed_modules + 1))
+
+	run_module collect_listening_ports ||
+		failed_modules=$((failed_modules + 1))
+
+	run_module collect_modified_files ||
+		failed_modules=$((failed_modules + 1))
+
+	if (( failed_modules > 0 ));then 
+		log_message "ERROR" "$failed_module module(s) failed"
+		return 1
+	fi 
+
+	log_message "SUCCESS" "All module completed successfully"
+	return 0
 }	
 
 
