@@ -125,21 +125,6 @@ else
 	echo "Warning: script is not runningg with sudo."
 fi
 
-#valideate configuration 
-
-if [[ ! -d "$REPORT_DIR" ]]; then
-	echo "the folder report not exit "
-	create_directory "$REPORT_DIR"
-elif [[ ! -n "$REPORT_DIR" ]]; then 
-	echo "folder reports is empty"
-elif ! (is_writable "$REPORT_DIR"); then 
-	echo "the folder not writable"
-elif ! (is_readable "$REPORT_DIR"); then
-	echo "the folder nit redadable"
-else
-	echo "configuraton valid...."
-fi
-
 ##### check modified days
 if [[ ! "$MODIFIED_DAYS" =~ ^[0-9]+$ ]]; then 
 	echo "Invalid value: modified days must be a number"
@@ -167,6 +152,7 @@ else
 	echo "scan path valid...."
 fi
 
+#
 
 # Display the main menu
 
@@ -174,6 +160,11 @@ collect_all_evidence() {
 	#Collect all evidence: not implemented yet.
 	enable_all_modules
 	display_selected_modules
+
+	if ! prepare_report_directory; then
+		return 1
+	fi 
+
 	run_all_modules
 }
 
@@ -247,26 +238,24 @@ select_specific_modules() {
         echo
 }
 #Create the report directory
-prepare_report_direcotory() {
+INCIDENT_DIR=""
+prepare_report_directory() {
 	local timestamp
-        local folder_name	
 
-	timestamp=$(date "+%Y-%m-%d_%H-%M-%S")
+	timestamp=$(date "+%Y-%m-%d_%H-%M-%SZ")
 
-	folder_name="incident_$timestamp"
-	
-	incident_folder="$REPORT_DIR/$folder_name"
-	create_directory "$incident_folder"
-	
-	#verfiy that the directory exists and is writable 
-	if [[ -d "$incident_folder" && -w "$incident_folder" ]]; then
-		echo "Folder exists and is writable "
-	else
-		echo "folder is missing or not writable"
-		exit 1 
+	if ! INCIDENT_DIR=$(mktemp -d "$REPORT_DIR/incident_${timestamp}_XXXXXX"); then
+		echo "Erro: could not create incident directory" >&2
+		return 1
 	fi
 
+	if [[ ! -d "$INCIDENT_DIR" ||! -w "$INCIDENT_DIR" ]]; then
+		echo "Error: incident directory is not writable: $INCIDENT_DIR" >&2
+		return 1
+	fi
 
+	log_message "SUCCESS" "Incident diretory created: $INCIDENT_DIR"
+	return 0
 }	
 # load module file
 load_module_files() {
