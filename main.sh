@@ -50,6 +50,33 @@ if (( module_count == 0 )); then
 	exit 1
 fi
 
+# validate and prepare the report directory
+if [[ -e "$REPORT_DIR" && ! -d "$REPORT_DIR" ]]; then
+	echo "Error: report path exists but is not a directory: $REPORT_DIR" >&2
+	exit 1
+fi
+
+if [[ ! -d "$REPORT_DIR" ]]; then
+	log_message "INFO" "creating report diretory: $REPORT_DIR"
+
+	if ! create_directory "$REPORT_DIR"; then
+		echo "Error: could not create report directory: $REPORT_DIR" >&2
+		exit 1
+	fi
+fi
+
+if ! is_readable "$REPORT_DIR"; then
+	echo "Error: report directory is not readable : $REPORT_DIR" >&2
+	exit 1
+fi 
+
+if ! is_writable "$REPORT_DIR"; then 
+	echo "Error: report directory is not writable: $REPORT_DIR" >&2
+	exit 1
+fi
+
+log_message "SUCCESS" "Report direcotory is ready: $REPORT_DIR"
+
 #run all mdoules
 run_all_modules() {
 	local failed_modules=0
