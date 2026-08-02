@@ -20,9 +20,35 @@ source "$CONFIG_PATH"
 source "$HELPER_PATH"
 
 #load all modules for can use it
+source "$MODULE_PATH"
+module_count=0
+
 for module_file in "$MODULE_PATH"/*.sh; do
-	source "$module_file"
+	# when no .sh file exist, bash leaves the pattern unchanged.
+	[[ -e "$module_file" ]] || continue
+
+	if [[ ! -f "$module_file" ]]; then
+		echo "Error: module is not a regular file: $module_file" >&2
+		exit 1
+	fi
+
+	if [[ ! -r "$module_file" ]]; then
+		echo "Error: module is not readable: $module_file" >&2
+		exit 1
+	fi
+
+	if ! source "$module_file"; then
+		echo "Error: failed to load mddule: $module_file" >&2
+		exit 1
+	fi
+
+	((module_count++))
 done
+
+if (( module_count == 0 )); then
+	echo "Error: no module files found in :$MODULE_PATH" >&2
+	exit 1
+fi
 
 #run all mdoules
 run_all_modules() {
@@ -95,6 +121,8 @@ fi
 collect_all_evidence() {
 	#Collect all evidence: not implemented yet.
 	enable_all_modules
+	display_selected_modules
+	run_all_modules
 }
 
 select_specific_modules() {
