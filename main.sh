@@ -139,20 +139,53 @@ else
 fi
 
 ##### check configured scan paths exist
-if [[ ! -e "$SCAN_PATH" ]]; then 
-	echo "the path scan is not exit "
-	exit 1
-elif [[ ! -d "$SCAN_PATH" ]]; then
-	echo "same part in path not directory "
-	exit 1
-elif ! is_readable "$SCAN_PATH"; then 
-	echo " the folder not readabel "
-	exit 1
-else
-	echo "scan path valid...."
-fi
+validate_scan_paths() {
+	local scan_path
+	
+	VALID_SCAN_PATHS=()
 
-#
+	if [[ "$(declare -p SCAN_PATH 2>/dev/null)" != "declare -a"* ]]; then
+		echo "Error: SCAN_PATH must be a Bash array" >&2
+		return 1
+	fi
+
+	if (( ${#SCAN_PATH[@]} == 0 )); then
+		echo "Error: SCAN_PATH cannot be empty" >&2
+		return 1
+	fi
+
+	for scan_path in "${SCAN_PATH[@]}";do
+		if [[ -z "$scan_path" ]]; then
+			log_message "WARRING" "Igonring an empty scan path"
+			continue
+		fi
+
+		if [[ ! -e "$scan_path" ]]; then
+			log_message "WARRING" "Scan path does not exist: $scan_path"
+			continue
+		fi
+
+		if [[ ! -d "$scan_path" ]]; then
+			log_message "WARRING" "Scan path is not a directory: $scan_path"
+			continue
+		fi
+
+		if [[ ! -r "$scan_path" ]]; then
+			log_message "WARRING" "Scan path is not a readable: $scan_path"
+			continue
+		fi
+
+		VALID_SCAN_PATHS+=("$scan_path")
+		log_message "SUCCESS" "Valid scan path: $scan_path"
+	done
+
+	if (( ${#VALID_SCAN_PATHS[@]} == 0 )); then 
+		echo "Error: no valid scan paths are available" >&2
+		return 1
+	fi
+	
+	return 0
+}	
 
 # Display the main menu
 
@@ -257,6 +290,11 @@ prepare_report_directory() {
 	log_message "SUCCESS" "Incident diretory created: $INCIDENT_DIR"
 	return 0
 }	
+#run statup validatoin
+
+if ! validate_scan_paths; then
+	exit 1
+fi
 # load module file
 load_module_files() {
 	#checki if all modules exist 
