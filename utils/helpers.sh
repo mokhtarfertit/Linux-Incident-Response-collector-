@@ -74,16 +74,42 @@ is_writable() {
 # runs a collection function and records whether is succeded or failed
 run_module() {
 	local module_name="$1"
+	local evidence_name
+	local output_file
+	local error_file
+	local exit_code
+
+	if [[ -z "$INCIDENT_DIR" || ! -d "$INCIDENT_DIR" ]]; then 
+		log_message "ERROR" "Incident directory is not ready"
+		return 1
+	fi
+
+	if ! declare -F "$module_name" >/dev/null; then
+		log_message "ERROR" "Module funtion not exist: $module_name"
+		return 1
+	fi
+
+	evidence_name="${module_name#collect_}"
+	output_file="$INCIDENT_DIR/${evidence_name}.txt"
+	error_file="$INCIDENT_DIR/${evidence_name}.stderr.txt"
 
 	log_message "INFO" "Running module: $module_name"
 
-	if "$module_name";then
+	{
+		write_report_header "$module_name"
+		"$module_name"
+	} >"$output_file" 2>"$error_file"
+
+	exit_code=$?
+
+	if (( exit_code == 0 )); then
 		log_message "SUCCESS" "Module succeeded: $module_name"
-		return 0 
 	else
-		log_message "ERROR" "module failed: $module_name"
-		return 1
+		log_message "ERROR" \
+			"Module failed: $module_name (exit code: $exit_code)"
 	fi
+
+	return "exit_code"
 }
 display_main_menu() {
 	echo "1. collect all evidence"

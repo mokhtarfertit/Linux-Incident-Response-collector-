@@ -1,0 +1,57 @@
+# Vim temporary and recovery files
+
+*.swp
+
+*.swo
+
+*.swn
+
+*~
+
+
+
+# IDE configuration
+
+.vscode/
+
+.idea/
+
+
+
+# Operating-system files
+
+.DS_Store
+
+Thumbs.db
+
+desktop.ini
+
+
+
+# Collected incident evidence
+
+reports/*
+
+!reports/.gitkeep
+
+
+
+# Generated evidence archives
+
+incident_*.tar
+
+incident_*.tar.gz
+
+incident_*.tgz
+
+incident_*.zip
+
+
+
+# Temporary files and logs
+
+*.tmp
+
+*.temp
+
+*.log
