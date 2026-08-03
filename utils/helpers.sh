@@ -109,7 +109,7 @@ run_module() {
 			"Module failed: $module_name (exit code: $exit_code)"
 	fi
 
-	return "exit_code"
+	return "$exit_code"
 }
 display_main_menu() {
 	echo "1. collect all evidence"
