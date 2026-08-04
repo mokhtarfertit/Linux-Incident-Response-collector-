@@ -117,28 +117,39 @@ display_main_menu() {
 	echo "3. Exist"
 }
 
-AVAILABLE_MODULES=(
-		"PROCESSES"
-		"USERS"
-		"NETWORK"
-		"SCHEDULED_JOBS"
-		"LISTENING PORTS"
-		"COMMAND HISTORY"
-		"SYSTEM INFO"
-		"MODIFIED FILES"
-	)
-SELECTED_MODULES=()
+MODULE_LABELS=(
+	"Runnig porcesses"
+	"Logged-in users"
+	"Network connections"
+	"Scheduled jobs"
+	"Listening ports"
+	"Command history"
+	"System information"
+	"Modified files"
+)
+
+MODULE_FUNTIONS=(
+	"collect_running_processes"
+	"collect_current_logged"
+	"collect_network_connection"
+	"collect_scheduled_jobs"
+	"collect_listening_ports"
+	"collect_command_history"
+	"collect_system_info"
+	"collect_modified_files"
+)
+SELECTED_MODULE_INDICES=()
+	
 
 enable_all_modules() {
-	
+	SELECTED_MODULE_INDICES=("${!MODULE_LABELS[@]}")
 	printf '=%.0s' {1..70}
 	echo
 	echo "COLLECT ALL MODULES"
 	printf '=%.0s' {1..70}
 	echo
-	SELECTED_MODULES=("${AVAILABLE_MODULES[@]}")
-	printf '=%.0s' {1..70}
-	echo
+
+	display_selected_modules
 }
 
 display_available_modules() {
@@ -150,8 +161,8 @@ display_available_modules() {
 	printf '=%.0s' {1..70}
 	echo
 	
-	for index in "${!AVAILABLE_MODULES[@]}"; do
-		echo "$((index + 1)). ${AVAILABLE_MODULES[$index]}"
+	for index in "${!MODULE_LABELS[@]}"; do
+		echo "$((index + 1)). ${MODULE_LABELS[$index]}"
 	done
 	printf '=%.0s' {1..70}
 	echo 
@@ -159,12 +170,12 @@ display_available_modules() {
 }
 display_selected_modules() {
 	#display selected modules this fontion use with specific modole
-	local module
+	local index
 	
 	echo "Selected modules:"
 
-	for module  in "${SELECTED_MODULES[@]}"; do
-		echo "- $module"
+	for index in "${SELECTED_MODULE_INDICES[@]}"; do
+		echo "- ${MODULE_LABELS[$index]}"
 	done
 }
 Check_Number_Days() {

@@ -206,14 +206,14 @@ select_specific_modules() {
 	local index
 	local module_count
 
-	SELECTED_MODULES=()
+	SELECTED_MODULE_INDICES=()
 
 	display_available_modules
 
 	echo "Enter one or more modul numbers separated by spaces:"
 	read -r -a choices
 
-	module_count="${#AVAILABLE_MODULES[@]}"
+	module_count="${#MODULE_LABELS[@]}"
 
 	# Read one or more choices
 	# validate each choice
@@ -225,7 +225,7 @@ select_specific_modules() {
 		if [[ "$choice" =~ ^[0-9]+$ ]] &&	
 		(( choice >=1 && choice <=module_count )); then
 			index=$((choice - 1))
-			SELECTED_MODULES+=("${AVAILABLE_MODULES[$index]}")
+			SELECTED_MODULE_INDICES+=("$index")
 		else
 			echo "Invalid choice: $choice"
 		fi
@@ -235,7 +235,7 @@ select_specific_modules() {
 
 	# ask for the time range 
 	local days
-	if [[ ${#SELECTED_MODULES[@]} -gt 0 ]]; then
+	if (( ${#SELECTED_MODULE_INDICES[@]} > 0 )); then
 		echo "The array is not empty"
 		Check_Number_Days days	
 	else
