@@ -113,6 +113,35 @@ run_all_modules() {
 	return 0
 }	
 
+#run selected modules 
+run_selected_modules() {
+	local index
+	local function_name
+	local failed_modules=0
+	if (( ${#SELECTED_MODULE_INDICES[@]} == 0 )); then 
+		log_message "ERROR" "No modules were selected"
+		return 1
+	fi
+
+	for index in "${SELECTED_MODULE_INDICES[@]}"; do
+		function_name="${MODULE_FUNCTIONS[$index]}"
+
+		if ! run_module "$function_name"; then
+			failed_modules=$((failed_modules + 1))
+		fi
+	done
+
+	if (( failed_modules > 0 )); then 
+		log_message "ERROR" \ 
+			"$failed_modules selected modules(s) failed"
+		return 1
+	fi
+
+	log_message "SUCCESS" \
+		"All selected modules completed successufully"
+	return 0
+}
+			
 
 #Start the script 
 write_report_header "Linux Incident Response Collector"
@@ -260,11 +289,18 @@ select_specific_modules() {
 	
 	if [[ "$answer" == "yes" ]]; then
 		echo "continuing.."
+
+		if ! prepare_report_directory; then 
+			return 1
+		fi
+
+		run_selected_modules
 	elif [[ "$answer" == "no" ]]; then
-		echo "Stopping.."
-		exit 1
+		echo "collection cancelled"
+		return 0
 	else 
 		echo "Please enter yes or no."
+		return 1
 	fi
 	printf '=%.0s' {1..70}
         echo
