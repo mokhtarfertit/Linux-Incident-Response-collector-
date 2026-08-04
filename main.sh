@@ -20,7 +20,6 @@ source "$CONFIG_PATH"
 source "$HELPER_PATH"
 
 #load all modules for can use it
-source "$MODULE_PATH"
 module_count=0
 
 for module_file in "$MODULE_PATH"/*.sh; do
@@ -106,7 +105,7 @@ run_all_modules() {
 		failed_modules=$((failed_modules + 1))
 
 	if (( failed_modules > 0 ));then 
-		log_message "ERROR" "$failed_module module(s) failed"
+		log_message "ERROR" "$failed_modules module(s) failed"
 		return 1
 	fi 
 
@@ -275,7 +274,7 @@ INCIDENT_DIR=""
 prepare_report_directory() {
 	local timestamp
 
-	timestamp=$(date "+%Y-%m-%d_%H-%M-%SZ")
+	timestamp=$(date -u "+%Y-%m-%d_%H-%M-%SZ")
 
 	if ! INCIDENT_DIR=$(mktemp -d "$REPORT_DIR/incident_${timestamp}_XXXXXX"); then
 		echo "Erro: could not create incident directory" >&2

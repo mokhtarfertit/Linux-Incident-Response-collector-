@@ -2,7 +2,7 @@
 
 collect_modified_files() {
 	local scan_path
-	local failed_path=0
+	local failed_paths=0
 
 	if (( ${#VALID_SCAN_PATHS[@]} == 0 )); then
 		echo "Error: no validate scan paths are available" >&2
@@ -10,13 +10,13 @@ collect_modified_files() {
 	fi
 
 	echo "Recently modified files"
-	echo "Time range:previous $mODIFIED_DAYS day(s)"
+	echo "Time range:previous $MODIFIED_DAYS day(s)"
 
 	for scan_path in "${VALID_SCAN_PATHS[@]}"; do
 		echo
 		echo "Scan path: $scan_path"
 
-		if ! find "$scan_path"
+		if ! find "$scan_path" \
 			-xdev \
 			-type f \
 			-mtime "-$MODIFIED_DAYS" \
