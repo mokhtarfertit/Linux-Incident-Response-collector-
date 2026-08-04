@@ -262,13 +262,16 @@ select_specific_modules() {
 
 
 	# ask for the time range 
-	local days
-	if (( ${#SELECTED_MODULE_INDICES[@]} > 0 )); then
-		echo "The array is not empty"
-		Check_Number_Days days	
-	else
-		echo "the array is emty"
-		exit 1
+	local days="$MODIFIED_DAYS"
+
+	if (( ${#SELECTED_MODULE_INDICES[@]} == 0 )); then
+		echo "No valid modules were selected."
+		return 1	
+	fi
+	if is_module_selected "collect_modified_files"; then
+		if ! days="$(prompt_for_days)"; then
+			return 1
+		fi
 	fi
 	# show collection summary 
 	printf '=%.0s' {1..70}
@@ -289,9 +292,14 @@ select_specific_modules() {
 	if [[ "$answer" == "yes" ]]; then
 		echo "continuing.."
 
+		if is_module_selected "collect_modified_files"; then
+			MODIFIED_DAYS="$days"
+		fi
+
 		if ! prepare_report_directory; then 
 			return 1
 		fi
+
 
 		run_selected_modules
 	elif [[ "$answer" == "no" ]]; then
