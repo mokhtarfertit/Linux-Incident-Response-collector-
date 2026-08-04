@@ -178,23 +178,46 @@ display_selected_modules() {
 		echo "- ${MODULE_LABELS[$index]}"
 	done
 }
-Check_Number_Days() {
+prompt_for_days() {
 	local days
-	echo "enter nubmer of days [$MODIFIED_DAYS] :"  
-	read days
 
-	days="${days:-$MODIFIED_DAYS}"
-	echo "Selected value; $days"
-	if (( days > 7 || days < 1 )); then
-		echo "please enter nubmer between 1 and 7 days this is possible"
-		return 1
-	fi 
+	while true; do
+		printf "Enter number of days [%s]: " "$MODIFIED_DAYS" >&2
+
+		if ! read -r days; then 
+			echo "Error: could not read the number of days" >&2
+			return 1
+		fi
+
+		days="${days:-$MODIFIED_DAYS}"
+
+		if [[ "$days" =~ ^[0-9]+$ ]] && 
+			(( 10#$days >=1 && 10#$days <= 365 ))
+		then 
+			printf '%s\n' "$days"
+			return 0
+		fi 
+		
+		echo "Please enter a whole number between 1 and 365." >&2
+	done
 
 }
 
-# it still don't has good organsatio
+#check whethe a function was selected
+is_module_selected() {
+	local target_function="$1"
+	local index
 
+	for index in "${SELECTED_MODULE_INDICES[@]}"; do
+		if [[ "${MODULE_FUNCTIONS[$index]}" == "$target_function" ]]; then
+			return 0
+		fi
+	done
+	
+	return 1 
+}
 
+	
 
 
 
