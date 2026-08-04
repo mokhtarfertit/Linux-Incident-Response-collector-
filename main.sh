@@ -132,8 +132,7 @@ run_selected_modules() {
 	done
 
 	if (( failed_modules > 0 )); then 
-		log_message "ERROR" \ 
-			"$failed_modules selected modules(s) failed"
+		log_message "ERROR" "$failed_modules selected modules(s) failed"
 		return 1
 	fi
 

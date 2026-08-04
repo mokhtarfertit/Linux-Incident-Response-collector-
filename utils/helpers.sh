@@ -128,7 +128,7 @@ MODULE_LABELS=(
 	"Modified files"
 )
 
-MODULE_FUNTIONS=(
+MODULE_FUNCTIONS=(
 	"collect_running_processes"
 	"collect_current_logged"
 	"collect_network_connection"
