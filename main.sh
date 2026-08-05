@@ -290,30 +290,40 @@ select_specific_modules() {
 	else
         	echo "Warning: script is not runningg with sudo."
 	fi
-	read -r -p  "the information like you want (yes/no):" answer
-	
-	if [[ "$answer" == "yes" ]]; then
-		echo "continuing.."
-
-		if is_module_selected "collect_modified_files"; then
-			MODIFIED_DAYS="$days"
-		fi
-
-		if ! prepare_report_directory; then 
+	while true; do
+		
+		if ! read -r -p  "Continue with collections?  (yes/no):" answer; then
+			echo "Error: could not read your answer" >&2
 			return 1
 		fi
+	
+		case "${answer,,}" in
+			yes|y)
+				echo "continuing.."
 
+				if is_module_selected "collect_modified_files"; then
+					MODIFIED_DAYS="$days"
+				fi
 
-		run_selected_modules
-	elif [[ "$answer" == "no" ]]; then
-		echo "collection cancelled"
-		return 0
-	else 
-		echo "Please enter yes or no."
-		return 1
-	fi
-	printf '=%.0s' {1..70}
-        echo
+				if ! prepare_report_directory; then 
+					return 1
+				fi
+
+				if ! run_selected_modules; then
+					return 1
+				fi
+
+				return 0
+				;;
+			no|n)
+				echo "Collection cancelled."
+				return 0
+				;;
+			*)
+				echo "Please enter yes or no"
+				;;
+			esac
+done
 }
 #Create the report directory
 INCIDENT_DIR=""
