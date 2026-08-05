@@ -233,6 +233,7 @@ select_specific_modules() {
 	local choice
 	local index
 	local module_count
+	local function_name
 
 	SELECTED_MODULE_INDICES=()
 
@@ -242,17 +243,17 @@ select_specific_modules() {
 	read -r -a choices
 
 	module_count="${#MODULE_LABELS[@]}"
-
-	# Read one or more choices
-	# validate each choice
-	# Add valid modules names to SELECTED_MODULES
 	for choice in "${choices[@]}"; do
-		# validate that choice is a number
-		# convert user number to bash array index
-		# store the selcted module name
 		if [[ "$choice" =~ ^[0-9]+$ ]] &&	
-		(( choice >=1 && choice <=module_count )); then
-			index=$((choice - 1))
+		(( 10#$choice >=1 && 10#$choice <=module_count )); then
+			index=$((10#$choice - 1))
+			function_name="${MODULE_FUNCTIONS[$index]}"
+
+			if is_module_selected "$function_name"; then
+				echo "Already selected: ${MODULE_LABELS[$index]}"
+				continue 
+			fi 
+
 			SELECTED_MODULE_INDICES+=("$index")
 		else
 			echo "Invalid choice: $choice"
@@ -280,7 +281,9 @@ select_specific_modules() {
         printf '=%.0s' {1..70}
         echo
 	display_selected_modules
-	echo "the modified file time range is : $days"
+	if is_module_selected "collect_modified_files"; then 
+		echo "Modified-file time range: $days day(s)"
+	fi
         ###########check priviles run as a root
 	if is_root ; then
         	echo "Ruunning with root privileges."
