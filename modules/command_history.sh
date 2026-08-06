@@ -30,8 +30,8 @@ collect_command_history() {
 	do
 		[[ -d "$home_directory" ]] || continue
 
-		for history_name in "${histoyr_names[@]}"; do
-			history_file="#home_directory/$history_name"
+		for history_name in "${history_names[@]}"; do
+			history_file="$home_directory/$history_name"
 
 			[[ -f "$history_file" ]] || continue
 
