@@ -19,7 +19,7 @@ collect_network_connection() {
 			collection_failed=1
 		fi
 	else
-		echo "Error: is command is not available" >&2
+		echo "Error: ip command is not available" >&2
 		collection_failed=1 
 	fi 
 	
@@ -49,13 +49,17 @@ collect_network_connection() {
 
 	echo 
 	echo "--- ACTIVE NETWORK CONNECTIONS ---"
-
-	if command_exists netstat; then
+	if command_exists ss; then
+		if ! ss -tunap; then
+			echo "Error: ss failed to collect connections" >&2
+			collection_failed=1
+		fi
+	elif command_exists netstat; then
 		echo "ss is unavailable; using netstat instead."
 
 		if ! netstat -tunap; then 
 			echo "Error: netstat failed to collect connections" >&2
-			collections_failed=1
+			collection_failed=1
 		fi
 	else
 		echo "Error: neither ss nor netstat is available" >&2
