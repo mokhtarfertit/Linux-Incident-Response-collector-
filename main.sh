@@ -329,16 +329,37 @@ done
 INCIDENT_DIR=""
 prepare_report_directory() {
 	local timestamp
+	
+	if [[ -e "$REPORT_DIR" && ! -d "$REPORT_DIR" ]]; then 
+		echo "Error: report path exists but is not a direcotry: $REPORT_DIR" >&2
+		return 1
+	fi 
 
+	if ! mkdir -p -- "$REPORT_DIR"; then
+		echo "Error: could not create report directory: $REPORT_DIR" >&2
+		return 1
+	fi 
+
+	if [[ ! -w "$REPORT_DIR" ]]; then
+		echo "Error: report directory is not writable : $REPORT_DIR" >&2
+		echo "check its owner and permissions; do not use chmod 777." >&2
+		return 1
+	fi
+
+	if ! chmod 700 -- "$REPORT_DIR"; then
+		echo "Error: could not secure report directory: $REPORT_DIR" >&2
+		return 1
+	fi 
+	
 	timestamp=$(date -u "+%Y-%m-%d_%H-%M-%SZ")
 
 	if ! INCIDENT_DIR=$(mktemp -d "$REPORT_DIR/incident_${timestamp}_XXXXXX"); then
 		echo "Erro: could not create incident directory" >&2
 		return 1
 	fi
-
-	if [[ ! -d "$INCIDENT_DIR" ||! -w "$INCIDENT_DIR" ]]; then
-		echo "Error: incident directory is not writable: $INCIDENT_DIR" >&2
+	
+	if ! chmod 700 -- "$INCIDENT_DIR"; then 
+		echo "Erro: could not secure incident directory: $INCIDENT_DIR" >&2
 		return 1
 	fi
 
