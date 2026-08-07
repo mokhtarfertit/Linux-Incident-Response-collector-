@@ -10,7 +10,7 @@ collect_current_logged() {
 	echo 
 	
 	if ! [[ "$max_records" =~ ^[0-9]+$ ]] ||
-		(( 10#max_records < 1))
+		(( 10#$max_records < 1))
 	then
 		echo "Error: MAZ_LOGIN_RECORDS must be a positive number" >&2
 		return 1

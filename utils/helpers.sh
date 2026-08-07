@@ -116,6 +116,16 @@ display_main_menu() {
 	echo "2. Select specific evidence modules"
 	echo "3. Exist"
 }
+MODULE_CONFIG_FLAGS=(
+	"COLLECT_PROCESSES"
+	"COLLECT_USERS"
+	"COLLECT_NETWORK_CONNECTIONS"
+	"COLLECT_SCHEDULED_JOBS"
+	"COLLECT_LISTENING_PORTS"
+	"COLLECT_COMMAND_HISTORY"
+	"COLLECT_SYSTEM_INFO"
+	"COLLECT_MODIFIED_FILES"
+)
 
 MODULE_LABELS=(
 	"Runnig porcesses"
@@ -216,7 +226,24 @@ is_module_selected() {
 	
 	return 1 
 }
+#check if module is enable in configration or not
+module_is_enabled() {
+	local index="$1"
+	local config_name
+	local config_value
 
+	config_name="${MODULE_CONFIG_FLAGS[$index]}"
+
+	if [[ ! -v "$config_name" ]]; then
+		log_message "ERROR" \ 
+			"Missing configuration option: $config_name"
+		return 1
+	fi 
+	
+	config_value="${!config_name}"
+
+	[[ "$config_value,,}" == "true" ]]
+}
 	
 
 

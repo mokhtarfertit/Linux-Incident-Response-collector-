@@ -64,7 +64,7 @@ collect_system_info() {
 
 	echo 
 	echo "--- BLOCK DEVICES ---"
-	if command-exists lsblk; then
+	if command_exists lsblk; then
 		lsblk -f
 	else
 		echo "lsblk is not available"
