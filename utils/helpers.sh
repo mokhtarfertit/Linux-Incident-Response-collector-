@@ -245,7 +245,32 @@ module_is_enabled() {
 	[[ "$config_value,,}" == "true" ]]
 }
 	
+validate_module_configuration() {
 
+	local config_name
+	local config_value 
+
+	for config_name in "${MODULE_CONFIG_FLAGS[@]}"; do
+		if [[ ! -v "$config_name" ]]; then
+			log_message "ERROR" "Missing configration option: $config_name"
+			return 1
+		fi
+
+		config_value="${!config_name}"
+
+		case "${config_value,,}" in
+			true|false)
+				;;
+			*)
+				log_message "ERROR" "$config_name must be true or false"
+				return 1
+				;;
+		esac
+	done
+
+	return 0
+
+}
 
 
 
