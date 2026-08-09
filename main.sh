@@ -19,6 +19,9 @@ source "$CONFIG_PATH"
 #Load the helper functions 
 source "$HELPER_PATH"
 
+if ! validate_module_configuration; then
+	exit 1
+fi 
 #load all modules for can use it
 module_count=0
 
@@ -218,15 +221,19 @@ validate_scan_paths() {
 
 collect_all_evidence() {
 	#Collect all evidence: not implemented yet.
-	enable_all_modules
+	if ! enable_all_modules; then
+		return 1 
+	fi
+
 	display_selected_modules
 
 	if ! prepare_report_directory; then
 		return 1
 	fi 
-
-	run_all_modules
+	
+	run_selected_modules
 }
+
 
 select_specific_modules() {
 	local choices
