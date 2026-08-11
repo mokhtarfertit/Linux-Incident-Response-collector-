@@ -225,7 +225,6 @@ collect_all_evidence() {
 		return 1 
 	fi
 
-	display_selected_modules
 
 	if ! prepare_report_directory; then
 		return 1
@@ -254,6 +253,12 @@ select_specific_modules() {
 		if [[ "$choice" =~ ^[0-9]+$ ]] &&	
 		(( 10#$choice >=1 && 10#$choice <=module_count )); then
 			index=$((10#$choice - 1))
+			
+			if ! module_is_enabled "$index"; then
+				echo "Module is disabled in configuration: ${MODULE_LABELS[$index]}"
+				continue
+			fi
+
 			function_name="${MODULE_FUNCTIONS[$index]}"
 
 			if is_module_selected "$function_name"; then

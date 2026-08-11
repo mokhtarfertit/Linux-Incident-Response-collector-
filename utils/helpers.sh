@@ -152,14 +152,28 @@ SELECTED_MODULE_INDICES=()
 	
 
 enable_all_modules() {
-	SELECTED_MODULE_INDICES=("${!MODULE_LABELS[@]}")
 	printf '=%.0s' {1..70}
 	echo
 	echo "COLLECT ALL MODULES"
 	printf '=%.0s' {1..70}
 	echo
+	
+	local index
 
-	display_selected_modules
+	SELECTED_MODULE_INDICES=()
+
+	for index in "${!MODULE_FUNCTIONS[@]}"; do
+		if module_is_enabled "$index"; then
+			SELECTED_MODULE_INDICES+=("$index")
+		fi
+	done
+
+	if (( ${#SELECTED_MODULE_INDICES[@]} == 0 )); then
+		log_message "ERROR" "All Collection modules are disable"
+		return 1
+	fi
+
+	return 0 
 }
 
 display_available_modules() {
@@ -242,7 +256,7 @@ module_is_enabled() {
 	
 	config_value="${!config_name}"
 
-	[[ "$config_value,,}" == "true" ]]
+	[[ "${config_value,,}" == "true" ]]
 }
 	
 validate_module_configuration() {
