@@ -391,6 +391,11 @@ load_module_files() {
 
 }
 while true; do
+	printf '=%.0s' {1..70}
+	echo 
+	echo " MAIN OF LIRC "
+	printf '=%.0s' {1..70}
+	echo 
 	display_main_menu
 	read -r -p "Enter number from Menu: " choice
 	case "$choice" in
