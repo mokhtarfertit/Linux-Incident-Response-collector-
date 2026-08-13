@@ -125,6 +125,7 @@ MODULE_CONFIG_FLAGS=(
 	"COLLECT_COMMAND_HISTORY"
 	"COLLECT_SYSTEM_INFO"
 	"COLLECT_MODIFIED_FILES"
+	"COLLECT_SYSTEM_LOGS"
 )
 
 MODULE_LABELS=(
@@ -136,6 +137,7 @@ MODULE_LABELS=(
 	"Command history"
 	"System information"
 	"Modified files"
+	"System logs"
 )
 
 MODULE_FUNCTIONS=(
@@ -147,6 +149,7 @@ MODULE_FUNCTIONS=(
 	"collect_command_history"
 	"collect_system_info"
 	"collect_modified_files"
+	"collect_system_logs"
 )
 SELECTED_MODULE_INDICES=()
 	

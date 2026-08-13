@@ -98,7 +98,7 @@ collect_system_logs() {
 	echo "--- TRADITIONAL AUTHENTICATION LOGS ---"
 
 	if command_exists tail; then
-		for auth_file in "${auth_files[@]}" do
+		for auth_file in "${auth_files[@]}"; do
 			[[ -f "$auth_file" ]] || continue
 
 			auth_file_found=1
@@ -168,11 +168,48 @@ collect_system_logs() {
 	if command_exists journalctl; then
 		if LC_ALL=C journalctl \
 			--kernel \
-			--since "
+			--since "$log_days days ago" \
+			--utc \
+			--no-pager \
+			--output=short-iso-precise \
+			-n "$max_log_lines"
+		then 
+			sources_collected=$((sources_collected + 1))
+		elif command_exists dmesg; then
+			echo "kernel journal failed; using dmesg instead." >&2
+
+			if dmesg --ctime; then
+				sources_collected=$((sources_collected + 1))
+			else
+				echo "Error: failed to collect kernel logs using dmesg" >&2
+				collection_failed=1
+			fi
+		else
+			echo "Error: kernel logs could not be collected" >&2
+			collection_failed=1
+		fi
+	elif command_exists dmesg; then
+		echo "journalctl is unavailable; using dmesg."
+
+		if dmesg --ctime; then 
+			sources_collected=$((sources_collected + 1))
+		else
+			echo "Error: failed to collect kernel logs using dmesg" >&2
+			collection_failed=1
+		fi
+	else
+		echo "Error: neither journalctl nor dmesg is available" >&2
+		collection_failed=1
+	fi
+
+	if (( sources_collected == 0)); then
+		echo "Error: no system-log sources were collected" >&2
+		return 1
+	fi
+
+	if (( collection_failed > 0 )); then
+		return 1
+	fi
 	
-
-
-
-
-
+	return 0
 }
