@@ -289,8 +289,34 @@ validate_module_configuration() {
 
 }
 
+display_launcher() {
+	    local cyan=""
+	    local reset=""
+		    # Add colour only when running in a terminal.
+		    
+	    if [[ -t 1 ]]; then
+		cyan=$'\033[1;36m'
+	        reset=$'\033[0m'
+	    fi
+	    
+	    clear
+	    
+	    printf '%s' "$cyan"
+	    
+	    cat <<'LIRC_LOGO'
+ __       __   _______       _____
+|  |     |  | |   _   \     /      |	
+|  |     |  | |  |_)  |    |  ,----'		   
+|  |     |  | |      /     |  |		  
+|  `----.|  | |  |\  \--.  |  `----.		    
+|_______||__| | _| `.___|   \______|
 
 
+	LINUX INCIDENT RESPONSE COLLECT
+LIRC_LOGO
+	
+	printf '%s\n' "$reset"
+}
 
 
 

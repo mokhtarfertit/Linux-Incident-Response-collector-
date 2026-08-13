@@ -390,6 +390,8 @@ load_module_files() {
 	#check the collected modules are exist 
 
 }
+
+display_launcher
 while true; do
 	printf '=%.0s' {1..70}
 	echo 
