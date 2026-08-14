@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly LIRC_MAIN="/opt/lirc-collector/main.sh"
+
+if [[ ! -x "$LIRC_MAIN" ]]; then
+	echo "Error: LIRC installation is incomplete." >&2
+	echo "Missing executable : $LIRC_MAIN" >&2
+	exit 1
+fi
+
+exec "$LIRC_MAIN" "$@"

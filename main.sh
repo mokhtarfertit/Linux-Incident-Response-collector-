@@ -4,7 +4,7 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_PATH="$BASE_DIR/config/config.collector.conf"
 HELPER_PATH="$BASE_DIR/utils/helpers.sh"
 MODULE_PATH="$BASE_DIR/modules"
-REPORT_DIR="$BASE_DIR/reports"
+REPORT_DIR="${LIRC_REPORT_DIR:-/var/lib/lirc-collector/reports}"
 
 
 #check requret of project
