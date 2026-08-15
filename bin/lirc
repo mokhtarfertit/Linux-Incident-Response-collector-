@@ -12,4 +12,9 @@ if [[ ! -x "$LIRC_MAIN" ]]; then
 	exit 1
 fi
 
+if (( EUID != 0 )); then 
+	echo "LIRC requires root privileges."
+	exec sudo -- "$LIRC_MAIN" "$@"
+fi
+
 exec "$LIRC_MAIN" "$@"
