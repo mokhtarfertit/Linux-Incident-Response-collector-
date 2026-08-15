@@ -1,4 +1,4 @@
-#!usr/bin/env bash
+#!/usr/bin/env bash
 
 set -o errexit
 set -o nounset
@@ -21,11 +21,12 @@ required_paths=(
 	"$SOURCE_DIR/config"
 	"$SOURCE_DIR/modules"
 	"$SOURCE_DIR/utils"
+	"$SOURCE_DIR/bin/lirc"
 )
 
 for required_path in "${required_paths[@]}"; do 
 	if [[ ! -e "$required_path" ]]; then
-		echo "Error: required path is missing: $required_path" >$2
+		echo "Error: required path is missing: $required_path" >&2
 		exit 1
 	fi
 done
@@ -61,24 +62,6 @@ install -d \
 	-m 700 \
 	"$REPORT_DIR"
 
-##################### commmand launcher ##########################################
-
-cat >"$COMMAND_PATH" <<'LIRC_COMMAND'
-#!/usr/bin/env bash
-
-readonly LIRC_MAIN="/opt/lirc-collector/main.sh"
-
-if [[ ! -x "$LIRC_MAIN" ]]; then
-	echo "Error: LIRC installation is incomplete." >&2
-	echo "Missing executabel: $LIRC_MAIN" >&2
-	exit 1
-fi
-
-exec "$LIRC_MAIN" "$@"
-LIRC_COMMAND
-
-chown root:root "$COMMAND_PATH"
-chmod 755 "$COMMAND_PATH"
 
 echo 
 echo "LIRC isntalled successfully."
